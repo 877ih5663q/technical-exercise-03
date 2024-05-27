@@ -1,45 +1,67 @@
-# Python: Getting Started
+We are expecting to receive a simple application that shows your programming skills and knowledge. We consider that the average time to implement this project it's about 5 hours but because we understand you are a busy person you have a maximum of 48 hours after you receive the test to send us your answer.
 
-A barebones Django app, which can easily be deployed to Heroku.
+We will evaluate the following:
 
-This application supports the [Getting Started with Python on Heroku](https://devcenter.heroku.com/articles/getting-started-with-python) article - check it out.
++ REST API with CRUD operations.
++ Link to the repository (Github, Bitbucket)
 
-## Running Locally
+You are working for a startup called Melp, which has a revolutionary idea about building an app that will provide useful information about restaurants to users.
 
-Make sure you have Python 3.7 [installed locally](http://install.python-guide.org). To push to Heroku, you'll need to install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli), as well as [Postgres](https://devcenter.heroku.com/articles/heroku-postgresql#local-setup).
+You were provided with a CSV which contains raw data about the restaurants. Your first job consists in importing the raw data into a relational database and expose a REST API that implements CRUD (Create, Read, Update, Delete) operations.
 
-```sh
-$ git clone https://github.com/heroku/python-getting-started.git
-$ cd python-getting-started
+The Restaurant table needs to have the following schema:
 
-$ python3 -m venv getting-started
-$ pip install -r requirements.txt
-
-$ createdb python_getting_started
-
-$ python manage.py migrate
-$ python manage.py collectstatic
-
-$ heroku local
+```sql
+Restaurants (
+  id TEXT PRIMARY KEY, -- Unique Identifier of Restaurant
+  rating INTEGER, -- Number between 0 and 4
+  name TEXT, -- Name of the restaurant
+  site TEXT, -- Url of the restaurant
+  email TEXT,
+  phone TEXT,
+  street TEXT,
+  city TEXT,
+  state TEXT,
+  lat FLOAT, -- Latitude
+  lng FLOAT) -- Longitude
 ```
 
-Your app should now be running on [localhost:5000](http://localhost:5000/).
+You can find the CSV with the raw data at the following link (it contains dummy data): https://example.com/restaurantes.csv
 
-## Deploying to Heroku
+Your second task consists in implementing the following endpoint:
 
-```sh
-$ heroku create
-$ git push heroku main
-
-$ heroku run python manage.py migrate
-$ heroku open
 ```
-or
+/restaurants/statistics?latitude=x&longitude=y&radius=z
+```
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+It receives latitude and a longitude as parameters, which correspond to the center of a circle, and a third parameter that corresponds to a radius in METERS.
 
-## Documentation
+Hint: A tool like PostGIS or equivalent may help you with the spatial queries ;)
 
-For more information about using Python on Heroku, see these Dev Center articles:
+This endpoint needs to return a JSON with the following data:
 
-- [Python on Heroku](https://devcenter.heroku.com/categories/python)
+```
+{
+  count: Count of restaurants that fall inside the circle with center [x,y] y radius z,
+  avg: Average rating of restaurant inside the circle,
+  std: Standard deviation of rating of restaurants inside the circle
+}
+```
+
+When you are finished, upload your project to:
+
+https://www.heroku.com/
+
+Once deployed send us the following:
+
++ Link to the heroku app
++ A Postman collection (https://www.getpostman.com/docs/collections) to test your API.
+
+Bonus Points:
+
++ Endpoint with statistical data.
++ Deployment of the project.
++ Good use of Git.
++ Documentation of the API.
++ Correct use of HTTP verbs.
++ Good programming practices.
